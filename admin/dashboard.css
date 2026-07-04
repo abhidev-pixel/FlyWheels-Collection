@@ -1,0 +1,187 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    background:#1a1a1a;
+}
+
+nav h2{
+    color:#FFD700;
+}
+
+button{
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    background:#FFD700;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+    padding:40px 0;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    margin-top:40px;
+}
+
+.card{
+    background:#1d1d1d;
+    padding:30px;
+    border-radius:15px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.add-car-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:30px;
+    max-width:500px;
+}
+
+.add-car-form input,
+.add-car-form select{
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#2a2a2a;
+    color:white;
+    font-size:16px;
+}
+
+.add-car-form button{
+    padding:15px;
+}
+
+#carsList{
+    margin-top:30px;
+}
+
+.admin-car{
+    background:#1d1d1d;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.admin-car img{
+    width:120px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+.admin-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.delete-btn{
+    background:#d32f2f;
+    color:white;
+}
+
+.edit-btn{
+    background:#1976d2;
+    color:white;
+}
+
+.status-btn{
+    background:#388e3c;
+    color:white;
+}
+
+#promoList{
+    margin-top:30px;
+}
+
+.promo-card{
+    background:#1d1d1d;
+    border:1px solid rgba(255,255,255,.08);
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.promo-card h3{
+    color:#FFD700;
+}
+
+.promo-card button{
+    background:#d32f2f;
+    color:white;
+    margin-top:15px;
+}
+
+/* Sales Dashboard */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:20px;
+    margin-top:20px;
+    max-width:600px;
+}
+
+.stat-card{
+    background:#1d1d1d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+.stat-card h3{
+    color:#FFD700;
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.stat-card p{
+    color:#aaa;
+}
+
+.sold-car-row{
+    background:#1d1d1d;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    padding:15px 20px;
+    margin-bottom:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.sold-car-name{
+    font-weight:bold;
+}
+
+.sold-car-promo{
+    color:#FFD700;
+}

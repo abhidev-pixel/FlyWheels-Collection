@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlyWheels Collection</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <h2>FlyWheels Collection</h2>
+</nav>
+
+<header class="hero">
+
+    <div class="hero-content">
+
+        <h1>FLYWHEELS COLLECTION</h1>
+
+        <p>Premium Cars for Car Parking Multiplayer</p>
+
+        <a href="#collection">
+            <button>Explore Collection</button>
+        </a>
+
+    </div>
+
+</header>
+
+<section class="collection" id="collection">
+
+    <h2>OUR COLLECTION</h2>
+
+    <div class="search-box">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search Volkswagen, BMW, Bus..."
+    >
+
+    <div id="searchSuggestions" class="search-suggestions"></div>
+
+</div>
+    <!-- Normal browsing view: category sections -->
+    <div id="normal-sections">
+
+        <h2 class="section-title">🔥 Latest Arrivals</h2>
+        <div class="cars" id="latest-container"></div>
+
+        <h2 class="section-title">🚗 HD Logos</h2>
+        <div class="cars" id="hdlogos-container"></div>
+
+        <h2 class="section-title">🔧 Builds</h2>
+       <div class="cars" id="builds-container"></div>
+
+        <h2 class="section-title">⭐ 1 of 1</h2>
+        <div class="cars" id="oneofone-container"></div>
+
+        <h2 class="section-title">🚌 Bus</h2>
+        <div class="cars" id="bus-container"></div>
+
+    </div>
+
+    <!-- Search results view: shown only while searching -->
+    <div id="search-results-section" style="display:none;">
+
+        <h2 class="section-title">Search Results</h2>
+        <div class="cars" id="search-results-container"></div>
+
+    </div>
+
+</section>
+
+<div class="popup" id="popup">
+
+    <div class="popup-content">
+
+        <span class="close">&times;</span>
+
+        <h2>Payment</h2>
+
+        <h3 id="popupCarName"></h3>
+        <p>Price: <span id="popupOriginalPrice"></span></p>
+        <p id="popupDiscountedRow" style="display:none;">
+            Discounted Price: <span id="popupDiscountedPrice"></span>
+        </p>
+
+        <img src="images/imagesqr.jpg" class="qr">
+
+        <p>Scan the QR code and complete the payment.</p>
+
+        <p>Send the payment screenshot to:</p>
+        <h3>Have a Promo Code?</h3>
+
+<input
+    type="text"
+    id="promoInput"
+    placeholder="Enter Promo Code"
+>
+
+<button id="applyPromo">
+    Apply
+</button>
+
+<p id="promoMessage"></p>
+
+        <a href="https://instagram.com/cpm.carriolic"
+           target="_blank"
+           class="insta-btn">
+            Contact on Instagram
+        </a>
+
+    </div>
+
+</div>
+
+<footer>
+
+    <h2>FlyWheels Collection</h2>
+
+    <p>Premium Cars for Car Parking Multiplayer</p>
+
+    <p class="built">Built by FlyWheels Customs</p>
+
+</footer>
+
+<div class="image-viewer" id="imageViewer">
+    <img src="" id="viewerImg">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js"></script>
+
+<a href="https://instagram.com/cpm.carriolic"
+   target="_blank"
+   class="floating-instagram">
+    📷 Instagram
+</a>
+
+</body>
+</html>

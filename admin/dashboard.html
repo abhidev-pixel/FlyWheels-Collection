@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body>
+
+<nav>
+
+<h2>FlyWheels Admin Dashboard</h2>
+
+<button id="logoutBtn">Logout</button>
+
+</nav>
+
+<div class="container">
+
+<h1>Welcome Admin 👋</h1>
+
+<p>Manage your marketplace from here.</p>
+
+
+<h2 style="margin-top:40px;">Add New Car</h2>
+
+<div class="add-car-form">
+
+<input
+type="text"
+id="carName"
+placeholder="Car Name"
+>
+
+<input
+type="number"
+id="carPrice"
+placeholder="Price"
+>
+
+<select id="carCategory">
+
+<option>HD Logos</option>
+
+<option>Builds</option>
+
+<option>1 of 1</option>
+
+<option>Bus</option>
+
+</select>
+
+<select id="carStatus">
+
+<option>Available</option>
+
+<option>Sold Out</option>
+
+</select>
+
+<input
+type="file"
+id="carImage"
+accept="image/*"
+>
+
+<button id="uploadCar">
+
+Upload Car
+
+</button>
+
+</div>
+
+<h2 style="margin-top:60px;">Promo Codes</h2>
+
+<div class="add-car-form">
+
+    <input
+        type="text"
+        id="promoCode"
+        placeholder="Promo Code"
+    >
+
+    <input
+        type="number"
+        id="promoDiscount"
+        placeholder="Discount (%)"
+    >
+
+    <button id="addPromo">
+        Add Promo Code
+    </button>
+
+</div>
+
+<div id="promoList" class="cards" style="margin-top:30px;"></div>
+
+<h2 style="margin-top:60px;">Sales Dashboard</h2>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <h3 id="totalCarsCount">0</h3>
+        <p>Total Cars</p>
+    </div>
+
+    <div class="stat-card">
+        <h3 id="availableCarsCount">0</h3>
+        <p>Available</p>
+    </div>
+
+    <div class="stat-card">
+        <h3 id="soldCarsCount">0</h3>
+        <p>Sold</p>
+    </div>
+
+</div>
+
+<h3 style="margin-top:30px;">Sold Cars</h3>
+
+<div id="soldCarsList" style="margin-top:15px;"></div>
+
+<h2 style="margin-top:50px;">Manage Cars</h2>
+
+<div id="carsList"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="dashboard.js"></script>
+
+</body>
+
+</html>
