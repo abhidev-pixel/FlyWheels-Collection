@@ -385,8 +385,12 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 // -----------------------------------------------------------------------------
-// Payment Popup Modal
 // -----------------------------------------------------------------------------
+// Order & Payment Popup Modal (Direct to Seller without database)
+// -----------------------------------------------------------------------------
+const SELLER_WHATSAPP = "918590808931"; // Seller WhatsApp: +91 8590808931
+const SELLER_EMAIL = "carriolic44@gmail.com";
+
 const popup = document.getElementById("popup");
 const popupCloseBtn = document.getElementById("popupCloseBtn");
 const popupBackdrop = document.querySelector(".popup-backdrop");
@@ -399,23 +403,56 @@ const promoInput = document.getElementById("promoInput");
 const promoMessage = document.getElementById("promoMessage");
 const applyPromoBtn = document.getElementById("applyPromo");
 
+// Form elements
+const buyerInsta = document.getElementById("buyerInsta");
+const buyerWhatsapp = document.getElementById("buyerWhatsapp");
+const buyerCpmId = document.getElementById("buyerCpmId");
+const buyerInstaError = document.getElementById("buyerInstaError");
+const buyerWhatsappError = document.getElementById("buyerWhatsappError");
+const confirmOrderBtn = document.getElementById("confirmOrderBtn");
+const confirmEmailBtn = document.getElementById("confirmEmailBtn");
+const orderStatusNotice = document.getElementById("orderStatusNotice");
+const qrToggleBtn = document.getElementById("qrToggleBtn");
+const qrAccordionBody = document.getElementById("qrAccordionBody");
+const qrToggleArrow = document.getElementById("qrToggleArrow");
+
 document.addEventListener("click", (e) => {
     const btn = e.target.closest(".purchase-btn");
     if (btn) {
         selectedCar = {
             id: btn.dataset.id,
             name: btn.dataset.name,
-            price: Number(btn.dataset.price)
+            price: Number(btn.dataset.price),
+            discountedPrice: null,
+            appliedPromo: null
         };
 
-        // Reset popup state
+        // Reset popup visual price state
         popupCarName.textContent = selectedCar.name;
         popupOriginalPrice.textContent = `₹${selectedCar.price}`;
+        popupOriginalPrice.style.textDecoration = "none";
+        popupOriginalPrice.style.opacity = "1";
         popupDiscountedRow.style.display = "none";
         popupDiscountedPrice.textContent = "";
+
+        // Reset promo inputs
         promoInput.value = "";
         promoMessage.textContent = "";
         promoMessage.className = "promo-message";
+
+        // Reset form inputs & validation errors
+        if (buyerInsta) buyerInsta.value = "";
+        if (buyerWhatsapp) buyerWhatsapp.value = "";
+        if (buyerCpmId) buyerCpmId.value = "";
+        clearFormErrors();
+
+        // Reset status notice & accordion
+        if (orderStatusNotice) {
+            orderStatusNotice.style.display = "none";
+            orderStatusNotice.innerHTML = "";
+        }
+        if (qrAccordionBody) qrAccordionBody.style.display = "none";
+        if (qrToggleArrow) qrToggleArrow.classList.remove("open");
 
         popup.style.display = "flex";
         document.body.style.overflow = "hidden"; // Prevent background scroll
@@ -437,6 +474,200 @@ window.addEventListener("keydown", (e) => {
         closePopup();
     }
 });
+
+// Helper: Clear validation styles & messages
+function clearFormErrors() {
+    if (buyerInsta) {
+        const wrap = buyerInsta.closest(".input-with-prefix");
+        if (wrap) wrap.classList.remove("has-error");
+    }
+    if (buyerWhatsapp) {
+        const wrap = buyerWhatsapp.closest(".input-with-prefix");
+        if (wrap) wrap.classList.remove("has-error");
+    }
+    if (buyerInstaError) {
+        buyerInstaError.textContent = "";
+        buyerInstaError.classList.remove("visible");
+    }
+    if (buyerWhatsappError) {
+        buyerWhatsappError.textContent = "";
+        buyerWhatsappError.classList.remove("visible");
+    }
+}
+
+// Real-time input error clearing on typing
+if (buyerInsta) {
+    buyerInsta.addEventListener("input", () => {
+        buyerInsta.closest(".input-with-prefix")?.classList.remove("has-error");
+        if (buyerInstaError) {
+            buyerInstaError.textContent = "";
+            buyerInstaError.classList.remove("visible");
+        }
+    });
+}
+
+if (buyerWhatsapp) {
+    buyerWhatsapp.addEventListener("input", () => {
+        buyerWhatsapp.closest(".input-with-prefix")?.classList.remove("has-error");
+        if (buyerWhatsappError) {
+            buyerWhatsappError.textContent = "";
+            buyerWhatsappError.classList.remove("visible");
+        }
+    });
+}
+
+// QR Code Accordion toggle
+if (qrToggleBtn) {
+    qrToggleBtn.addEventListener("click", () => {
+        if (!qrAccordionBody) return;
+        const isHidden = qrAccordionBody.style.display === "none" || !qrAccordionBody.style.display;
+        qrAccordionBody.style.display = isHidden ? "block" : "none";
+        if (qrToggleArrow) {
+            qrToggleArrow.classList.toggle("open", isHidden);
+        }
+    });
+}
+
+// Validate Buyer Form
+function validateOrderForm() {
+    clearFormErrors();
+    let isValid = true;
+
+    const rawInsta = buyerInsta ? buyerInsta.value.trim() : "";
+    const cleanInsta = rawInsta.replace(/^@+/, "").trim();
+
+    if (!cleanInsta) {
+        if (buyerInsta) buyerInsta.closest(".input-with-prefix")?.classList.add("has-error");
+        if (buyerInstaError) {
+            buyerInstaError.textContent = "Please enter your Instagram username.";
+            buyerInstaError.classList.add("visible");
+        }
+        if (isValid && buyerInsta) buyerInsta.focus();
+        isValid = false;
+    }
+
+    const rawPhone = buyerWhatsapp ? buyerWhatsapp.value.trim() : "";
+    const digitsOnly = rawPhone.replace(/\D/g, "");
+
+    if (!rawPhone || digitsOnly.length < 10) {
+        if (buyerWhatsapp) buyerWhatsapp.closest(".input-with-prefix")?.classList.add("has-error");
+        if (buyerWhatsappError) {
+            buyerWhatsappError.textContent = "Please enter a valid WhatsApp number (at least 10 digits).";
+            buyerWhatsappError.classList.add("visible");
+        }
+        if (isValid && buyerWhatsapp) buyerWhatsapp.focus();
+        isValid = false;
+    }
+
+    return isValid ? {
+        insta: cleanInsta,
+        phone: rawPhone,
+        cpmId: buyerCpmId ? buyerCpmId.value.trim() : ""
+    } : null;
+}
+
+// -----------------------------------------------------------------------------
+// Confirm Order via WhatsApp (Direct to Seller: +91 8590808931)
+// -----------------------------------------------------------------------------
+function handleWhatsAppOrder() {
+    if (!selectedCar) return;
+
+    const buyerData = validateOrderForm();
+    if (!buyerData) return;
+
+    const finalPrice = (selectedCar.discountedPrice !== null && selectedCar.discountedPrice !== undefined)
+        ? selectedCar.discountedPrice
+        : selectedCar.price;
+
+    const promoNote = selectedCar.appliedPromo 
+        ? `\n🎟️ *Promo Code:* ${selectedCar.appliedPromo.code} (${selectedCar.appliedPromo.discount}% OFF)`
+        : "";
+
+    const cpmNote = buyerData.cpmId
+        ? `\n🎮 *CPM ID / Note:* ${buyerData.cpmId}`
+        : "";
+
+    const message = 
+`🚗 *NEW VEHICLE ORDER - FLYWHEELS* 🚗
+━━━━━━━━━━━━━━━━━━━━━━
+🏎️ *Vehicle:* ${selectedCar.name}
+💰 *Total Amount:* ₹${finalPrice}${promoNote}
+📸 *Buyer Instagram:* @${buyerData.insta}
+📱 *Buyer WhatsApp:* ${buyerData.phone}${cpmNote}
+━━━━━━━━━━━━━━━━━━━━━━
+👋 Hello FlyWheels Customs! I want to confirm my order for this car. Please share the CPM delivery room details!`;
+
+    const waUrl = `https://api.whatsapp.com/send?phone=${SELLER_WHATSAPP}&text=${encodeURIComponent(message)}`;
+
+    // Open WhatsApp in a new tab / mobile app
+    window.open(waUrl, "_blank");
+
+    if (orderStatusNotice) {
+        orderStatusNotice.innerHTML = `
+            <strong>✅ Order details prepared!</strong><br>
+            Opening WhatsApp to send your order directly to seller (+91 8590808931).<br>
+            <a href="${waUrl}" target="_blank" rel="noopener">Tap here if WhatsApp did not open automatically ↗</a>
+        `;
+        orderStatusNotice.style.display = "block";
+    }
+}
+
+if (confirmOrderBtn) {
+    confirmOrderBtn.addEventListener("click", handleWhatsAppOrder);
+}
+
+// -----------------------------------------------------------------------------
+// Confirm Order via Email (Fallback to Seller: carriolic44@gmail.com)
+// -----------------------------------------------------------------------------
+function handleEmailOrder() {
+    if (!selectedCar) return;
+
+    const buyerData = validateOrderForm();
+    if (!buyerData) return;
+
+    const finalPrice = (selectedCar.discountedPrice !== null && selectedCar.discountedPrice !== undefined)
+        ? selectedCar.discountedPrice
+        : selectedCar.price;
+
+    const promoNote = selectedCar.appliedPromo 
+        ? `\nPromo Code: ${selectedCar.appliedPromo.code} (${selectedCar.appliedPromo.discount}% OFF)`
+        : "";
+
+    const cpmNote = buyerData.cpmId
+        ? `\nCPM Player ID / Note: ${buyerData.cpmId}`
+        : "";
+
+    const subject = `Order Request: ${selectedCar.name} - FlyWheels Collection`;
+
+    const body = 
+`NEW VEHICLE ORDER - FLYWHEELS COLLECTION
+========================================
+Vehicle: ${selectedCar.name}
+Total Amount: ₹${finalPrice}${promoNote}
+Buyer Instagram: @${buyerData.insta}
+Buyer WhatsApp: ${buyerData.phone}${cpmNote}
+========================================
+
+Hello FlyWheels Customs,
+I would like to order this vehicle. Please reply with payment and in-game CPM delivery details.`;
+
+    const mailtoUrl = `mailto:${SELLER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailtoUrl;
+
+    if (orderStatusNotice) {
+        orderStatusNotice.innerHTML = `
+            <strong>✉️ Opening your email app...</strong><br>
+            Sending order details to <strong>${SELLER_EMAIL}</strong>.<br>
+            <a href="${mailtoUrl}">Click here if your email client didn't open</a>
+        `;
+        orderStatusNotice.style.display = "block";
+    }
+}
+
+if (confirmEmailBtn) {
+    confirmEmailBtn.addEventListener("click", handleEmailOrder);
+}
 
 // -----------------------------------------------------------------------------
 // Promo Code Application
@@ -472,6 +703,10 @@ if (applyPromoBtn) {
                 promoMessage.textContent = "Invalid promo code.";
                 promoMessage.style.color = "#FF453A";
                 popupDiscountedRow.style.display = "none";
+                popupOriginalPrice.style.textDecoration = "none";
+                popupOriginalPrice.style.opacity = "1";
+                selectedCar.discountedPrice = null;
+                selectedCar.appliedPromo = null;
                 return;
             }
 
@@ -479,13 +714,23 @@ if (applyPromoBtn) {
                 promoMessage.textContent = "This promo code has expired.";
                 promoMessage.style.color = "#FF453A";
                 popupDiscountedRow.style.display = "none";
+                popupOriginalPrice.style.textDecoration = "none";
+                popupOriginalPrice.style.opacity = "1";
+                selectedCar.discountedPrice = null;
+                selectedCar.appliedPromo = null;
                 return;
             }
 
             const discountPercent = Number(data.discount);
             const discountedPrice = selectedCar.price - (selectedCar.price * discountPercent / 100);
 
-            popupDiscountedPrice.textContent = `₹${discountedPrice.toFixed(0)}`;
+            selectedCar.discountedPrice = Math.round(discountedPrice);
+            selectedCar.appliedPromo = {
+                code: data.code.toUpperCase(),
+                discount: discountPercent
+            };
+
+            popupDiscountedPrice.textContent = `₹${selectedCar.discountedPrice}`;
             popupDiscountedRow.style.display = "flex";
 
             // Visual strike on original price

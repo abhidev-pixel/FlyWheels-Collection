@@ -1,340 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="FlyWheels Collection - Premium handcrafted custom cars, HD logos, and unique builds for Car Parking Multiplayer (CPM).">
+    <meta name="description"
+        content="FlyWheels Collection - Premium handcrafted custom cars, HD logos, and unique builds for Car Parking Multiplayer (CPM).">
     <title>FlyWheels Collection • Premium CPM Cars</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- Apple-style Ambient Background Glows -->
-<div class="ambient-glow glow-top" aria-hidden="true"></div>
-<div class="ambient-glow glow-middle" aria-hidden="true"></div>
+    <!-- Apple-style Ambient Background Glows -->
+    <div class="ambient-glow glow-top" aria-hidden="true"></div>
+    <div class="ambient-glow glow-middle" aria-hidden="true"></div>
 
-<!-- Sleek Frosted Glass Navigation -->
-<nav id="navbar">
-    <div class="nav-container">
-        <a href="#" class="brand-logo">
-            <span class="logo-mark">⚡</span>
-            <span class="brand-text">FLYWHEELS</span>
-            <span class="brand-tag">CUSTOMS</span>
-        </a>
-        <div class="nav-links">
-            <a href="#collection" class="nav-link">Categories</a>
-            <a href="#latest-section" class="nav-link">Latest</a>
-            <a href="https://instagram.com/cpm.carriolic" target="_blank" class="nav-btn-ig" rel="noopener">
-                <span>Instagram</span>
-                <span class="arrow-icon">↗</span>
-            </a>
-        </div>
-    </div>
-</nav>
-
-<!-- Hero Section with Apple Aesthetic -->
-<header class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <div class="hero-pill-badge scroll-reveal">
-            <span class="pulse-dot"></span>
-            <span>Car Parking Multiplayer • Exclusive Drops</span>
-        </div>
-
-        <h1 class="hero-title scroll-reveal">
-            FLYWHEELS<br><span class="gold-gradient-text">COLLECTION</span>
-        </h1>
-
-        <p class="hero-subtitle scroll-reveal">
-            Precision-crafted custom liveries, 4K HD logos, and 1-of-1 showpieces built for CPM enthusiasts.
-        </p>
-
-        <div class="hero-cta-group scroll-reveal">
-            <a href="#collection" class="btn-apple-primary">
-                Explore Categories
-                <span class="btn-arrow">↓</span>
-            </a>
-            <a href="#latest-section" class="btn-apple-secondary">
-                Latest Arrivals
-            </a>
-        </div>
-
-        <!-- Trust / Highlight Badges -->
-        <div class="hero-highlights scroll-reveal">
-            <div class="highlight-chip">
-                <span class="chip-icon">⚡</span> Instant Delivery
-            </div>
-            <div class="highlight-chip">
-                <span class="chip-icon">🎨</span> 4K HD Detailing
-            </div>
-            <div class="highlight-chip">
-                <span class="chip-icon">🛡️</span> 100% Authentic
-            </div>
-        </div>
-    </div>
-
-    <div class="scroll-indicator" aria-hidden="true">
-        <div class="mouse-wheel"></div>
-        <span>Scroll to discover</span>
-    </div>
-</header>
-
-<!-- Main Collection Section -->
-<main class="collection" id="collection">
-
-    <!-- Header & Spotlight Search -->
-    <div class="collection-header scroll-reveal">
-        <span class="eyebrow-tag">THE SHOWROOM</span>
-        <h2 class="collection-title">Explore by Category</h2>
-        <p class="collection-subtitle">Browse curated garage lineups or jump straight to your favorite styles</p>
-    </div>
-
-    <!-- Apple Spotlight-Style Search Box -->
-    <div class="search-box-wrapper scroll-reveal">
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search by car name, BMW, Porsche, Bus..."
-                autocomplete="off"
-            >
-            <button id="searchClearBtn" class="search-clear-btn" aria-label="Clear search" style="display:none;">✕</button>
-        </div>
-        <div id="searchSuggestions" class="search-suggestions"></div>
-    </div>
-
-    <!-- Apple-style Segmented Category Filter Pills (Mobile Horizontal Scrollable) -->
-    <div class="category-nav-bar scroll-reveal" id="categoryNav">
-        <div class="category-pills">
-            <button class="cat-pill active" data-target="all">All Vehicles</button>
-            <button class="cat-pill" data-target="hdlogos-section">🚗 HD Logos</button>
-            <button class="cat-pill" data-target="builds-section">🔧 Builds</button>
-            <button class="cat-pill" data-target="oneofone-section">⭐ 1 of 1</button>
-            <button class="cat-pill" data-target="bus-section">🚌 Bus</button>
-            <button class="cat-pill" data-target="latest-section">🔥 Latest Arrivals</button>
-        </div>
-    </div>
-
-    <!-- NORMAL BROWSING VIEW: All Categories First, Then Latest Arrivals Down Below -->
-    <div id="normal-sections">
-
-        <!-- 1. HD LOGOS SECTION -->
-        <section class="category-section scroll-reveal" id="hdlogos-section">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <span class="section-badge">HIGH RESOLUTION</span>
-                    <h2 class="section-title">🚗 HD Logos</h2>
-                </div>
-                <span class="section-count" id="count-hdlogos"></span>
-            </div>
-            <div class="cars" id="hdlogos-container">
-                <div class="skeleton-card"></div>
-                <div class="skeleton-card"></div>
-            </div>
-        </section>
-
-        <!-- 2. BUILDS SECTION -->
-        <section class="category-section scroll-reveal" id="builds-section">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <span class="section-badge">CUSTOM TUNING</span>
-                    <h2 class="section-title">🔧 Custom Builds</h2>
-                </div>
-                <span class="section-count" id="count-builds"></span>
-            </div>
-            <div class="cars" id="builds-container">
-                <div class="skeleton-card"></div>
-                <div class="skeleton-card"></div>
-            </div>
-        </section>
-
-        <!-- 3. 1 OF 1 SECTION -->
-        <section class="category-section scroll-reveal" id="oneofone-section">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <span class="section-badge">EXCLUSIVE</span>
-                    <h2 class="section-title">⭐ 1 of 1 Masterpieces</h2>
-                </div>
-                <span class="section-count" id="count-oneofone"></span>
-            </div>
-            <div class="cars" id="oneofone-container">
-                <div class="skeleton-card"></div>
-                <div class="skeleton-card"></div>
-            </div>
-        </section>
-
-        <!-- 4. BUS SECTION -->
-        <section class="category-section scroll-reveal" id="bus-section">
-            <div class="section-header">
-                <div class="section-title-wrap">
-                    <span class="section-badge">SPECIAL SERIES</span>
-                    <h2 class="section-title">🚌 Bus Edition</h2>
-                </div>
-                <span class="section-count" id="count-bus"></span>
-            </div>
-            <div class="cars" id="bus-container">
-                <div class="skeleton-card"></div>
-                <div class="skeleton-card"></div>
-            </div>
-        </section>
-
-        <!-- 5. SCROLL DOWN TO SEE: LATEST ARRIVALS SECTION -->
-        <section class="category-section latest-spotlight-section scroll-reveal" id="latest-section">
-            <div class="section-header latest-header">
-                <div class="section-title-wrap">
-                    <span class="section-badge fire-badge">FRESH DROPS</span>
-                    <h2 class="section-title">🔥 Latest Arrivals</h2>
-                    <p class="section-subtext">The most recent custom releases added to FlyWheels showroom</p>
-                </div>
-                <span class="section-count" id="count-latest"></span>
-            </div>
-            <div class="cars" id="latest-container">
-                <div class="skeleton-card"></div>
-                <div class="skeleton-card"></div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- SEARCH RESULTS VIEW: Shown dynamically while user types in search -->
-    <div id="search-results-section" style="display:none;">
-        <div class="section-header">
-            <div class="section-title-wrap">
-                <span class="section-badge">RESULTS</span>
-                <h2 class="section-title" id="search-results-title">Search Results</h2>
-            </div>
-            <button id="clearSearchLink" class="clear-search-link">Reset Search</button>
-        </div>
-        <div class="cars" id="search-results-container"></div>
-    </div>
-
-</main>
-
-<!-- Apple Sheet Style Payment Modal -->
-<div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popupCarName">
-    <div class="popup-backdrop"></div>
-    <div class="popup-content">
-        <button class="close" id="popupCloseBtn" aria-label="Close dialog">&times;</button>
-
-        <div class="popup-header">
-            <span class="popup-pill">SECURE CHECKOUT</span>
-            <h2>Order Vehicle</h2>
-            <h3 id="popupCarName">Select Car</h3>
-        </div>
-
-        <div class="price-container">
-            <div class="price-box" id="priceDisplayBox">
-                <span class="price-label">Price</span>
-                <span class="price-value" id="popupOriginalPrice">₹0</span>
-            </div>
-            <div class="price-box discounted-box" id="popupDiscountedRow" style="display:none;">
-                <span class="price-label">Discounted</span>
-                <span class="price-value gold" id="popupDiscountedPrice">₹0</span>
-            </div>
-        </div>
-
-        <div class="qr-wrapper">
-            <img src="images/imagesqr.jpg" alt="Payment QR Code" class="qr" id="paymentQrImg">
-            <div class="qr-caption">Scan with GPay / PhonePe / Paytm / UPI</div>
-        </div>
-
-        <!-- Promo Code Input -->
-        <div class="promo-container">
-            <label for="promoInput" class="promo-label">Have a Promo Code?</label>
-            <div class="promo-input-group">
-                <input
-                    type="text"
-                    id="promoInput"
-                    placeholder="Enter Code"
-                    autocomplete="off"
-                >
-                <button id="applyPromo" class="btn-promo-apply">
-                    Apply
-                </button>
-            </div>
-            <p id="promoMessage" class="promo-message"></p>
-        </div>
-
-        <div class="popup-instructions">
-            <p>1. Scan the QR code &amp; pay the vehicle amount.</p>
-            <p>2. Take a screenshot of the completed payment.</p>
-            <p>3. Tap below to send the screenshot on Instagram for instant in-game car delivery!</p>
-        </div>
-
-        <a href="https://instagram.com/cpm.carriolic"
-           target="_blank"
-           rel="noopener"
-           class="insta-btn">
-            <span>Send Payment Proof on Instagram</span>
-            <span class="btn-arrow">→</span>
-        </a>
-    </div>
-</div>
-
-<!-- Fullscreen Image Viewer Modal -->
-<div class="image-viewer" id="imageViewer" role="dialog" aria-modal="true">
-    <button class="viewer-close" id="viewerCloseBtn" aria-label="Close image">&times;</button>
-    <div class="viewer-inner">
-        <img src="" id="viewerImg" alt="Enlarged Car View">
-        <div class="viewer-tip">Tap anywhere or press ESC to close</div>
-    </div>
-</div>
-
-<!-- Premium Footer -->
-<footer>
-    <div class="footer-content">
-        <div class="footer-brand">
-            <div class="brand-logo">
+    <!-- Sleek Frosted Glass Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
                 <span class="logo-mark">⚡</span>
                 <span class="brand-text">FLYWHEELS</span>
                 <span class="brand-tag">CUSTOMS</span>
+            </a>
+            <div class="nav-links">
+                <a href="#collection" class="nav-link">Categories</a>
+                <a href="#latest-section" class="nav-link">Latest</a>
+                <a href="https://instagram.com/cpm.carriolic" target="_blank" class="nav-btn-ig" rel="noopener">
+                    <span>Instagram</span>
+                    <span class="arrow-icon">↗</span>
+                </a>
             </div>
-            <p class="footer-desc">The #1 premium marketplace for Car Parking Multiplayer custom liveries, ultra-realistic HD badges, and exclusive builds.</p>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Apple Aesthetic -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-pill-badge scroll-reveal">
+                <span class="pulse-dot"></span>
+                <span>Car Parking Multiplayer • Exclusive Drops</span>
+            </div>
+
+            <h1 class="hero-title scroll-reveal">
+                FLYWHEELS<br><span class="gold-gradient-text">COLLECTION</span>
+            </h1>
+
+            <p class="hero-subtitle scroll-reveal">
+                Precision-crafted custom liveries, 4K HD logos, and 1-of-1 showpieces built for CPM enthusiasts.
+            </p>
+
+            <div class="hero-cta-group scroll-reveal">
+                <a href="#collection" class="btn-apple-primary">
+                    Explore Categories
+                    <span class="btn-arrow">↓</span>
+                </a>
+                <a href="#latest-section" class="btn-apple-secondary">
+                    Latest Arrivals
+                </a>
+            </div>
+
+            <!-- Trust / Highlight Badges -->
+            <div class="hero-highlights scroll-reveal">
+                <div class="highlight-chip">
+                    <span class="chip-icon">⚡</span> Instant Delivery
+                </div>
+                <div class="highlight-chip">
+                    <span class="chip-icon">🎨</span> 4K HD Detailing
+                </div>
+                <div class="highlight-chip">
+                    <span class="chip-icon">🛡️</span> 100% Authentic
+                </div>
+            </div>
         </div>
 
-        <div class="footer-links-group">
-            <h4>Quick Navigation</h4>
-            <ul>
-                <li><a href="#collection">Showroom</a></li>
-                <li><a href="#hdlogos-section">HD Logos</a></li>
-                <li><a href="#builds-section">Custom Builds</a></li>
-                <li><a href="#latest-section">Latest Arrivals</a></li>
-            </ul>
+        <div class="scroll-indicator" aria-hidden="true">
+            <div class="mouse-wheel"></div>
+            <span>Scroll to discover</span>
+        </div>
+    </header>
+
+    <!-- Main Collection Section -->
+    <main class="collection" id="collection">
+
+        <!-- Header & Spotlight Search -->
+        <div class="collection-header scroll-reveal">
+            <span class="eyebrow-tag">THE SHOWROOM</span>
+            <h2 class="collection-title">Explore by Category</h2>
+            <p class="collection-subtitle">Browse curated garage lineups or jump straight to your favorite styles</p>
         </div>
 
-        <div class="footer-links-group">
-            <h4>Connect</h4>
-            <ul>
-                <li><a href="https://instagram.com/cpm.carriolic" target="_blank" rel="noopener">Instagram (@cpm.carriolic)</a></li>
-                <li><a href="#collection">How to Buy</a></li>
-            </ul>
+        <!-- Apple Spotlight-Style Search Box -->
+        <div class="search-box-wrapper scroll-reveal">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search by car name, BMW, Porsche, Bus..."
+                    autocomplete="off">
+                <button id="searchClearBtn" class="search-clear-btn" aria-label="Clear search"
+                    style="display:none;">✕</button>
+            </div>
+            <div id="searchSuggestions" class="search-suggestions"></div>
+        </div>
+
+        <!-- Apple-style Segmented Category Filter Pills (Mobile Horizontal Scrollable) -->
+        <div class="category-nav-bar scroll-reveal" id="categoryNav">
+            <div class="category-pills">
+                <button class="cat-pill active" data-target="all">All Vehicles</button>
+                <button class="cat-pill" data-target="hdlogos-section">🚗 HD Logos</button>
+                <button class="cat-pill" data-target="builds-section">🔧 Builds</button>
+                <button class="cat-pill" data-target="oneofone-section">⭐ 1 of 1</button>
+                <button class="cat-pill" data-target="bus-section">🚌 Bus</button>
+                <button class="cat-pill" data-target="latest-section">🔥 Latest Arrivals</button>
+            </div>
+        </div>
+
+        <!-- NORMAL BROWSING VIEW: All Categories First, Then Latest Arrivals Down Below -->
+        <div id="normal-sections">
+
+            <!-- 1. HD LOGOS SECTION -->
+            <section class="category-section scroll-reveal" id="hdlogos-section">
+                <div class="section-header">
+                    <div class="section-title-wrap">
+                        <span class="section-badge">HIGH RESOLUTION</span>
+                        <h2 class="section-title">🚗 HD Logos</h2>
+                    </div>
+                    <span class="section-count" id="count-hdlogos"></span>
+                </div>
+                <div class="cars" id="hdlogos-container">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+            </section>
+
+            <!-- 2. BUILDS SECTION -->
+            <section class="category-section scroll-reveal" id="builds-section">
+                <div class="section-header">
+                    <div class="section-title-wrap">
+                        <span class="section-badge">CUSTOM TUNING</span>
+                        <h2 class="section-title">🔧 Custom Builds</h2>
+                    </div>
+                    <span class="section-count" id="count-builds"></span>
+                </div>
+                <div class="cars" id="builds-container">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+            </section>
+
+            <!-- 3. 1 OF 1 SECTION -->
+            <section class="category-section scroll-reveal" id="oneofone-section">
+                <div class="section-header">
+                    <div class="section-title-wrap">
+                        <span class="section-badge">EXCLUSIVE</span>
+                        <h2 class="section-title">⭐ 1 of 1 Masterpieces</h2>
+                    </div>
+                    <span class="section-count" id="count-oneofone"></span>
+                </div>
+                <div class="cars" id="oneofone-container">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+            </section>
+
+            <!-- 4. BUS SECTION -->
+            <section class="category-section scroll-reveal" id="bus-section">
+                <div class="section-header">
+                    <div class="section-title-wrap">
+                        <span class="section-badge">SPECIAL SERIES</span>
+                        <h2 class="section-title">🚌 Bus Edition</h2>
+                    </div>
+                    <span class="section-count" id="count-bus"></span>
+                </div>
+                <div class="cars" id="bus-container">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+            </section>
+
+            <!-- 5. SCROLL DOWN TO SEE: LATEST ARRIVALS SECTION -->
+            <section class="category-section latest-spotlight-section scroll-reveal" id="latest-section">
+                <div class="section-header latest-header">
+                    <div class="section-title-wrap">
+                        <span class="section-badge fire-badge">FRESH DROPS</span>
+                        <h2 class="section-title">🔥 Latest Arrivals</h2>
+                        <p class="section-subtext">The most recent custom releases added to FlyWheels showroom</p>
+                    </div>
+                    <span class="section-count" id="count-latest"></span>
+                </div>
+                <div class="cars" id="latest-container">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- SEARCH RESULTS VIEW: Shown dynamically while user types in search -->
+        <div id="search-results-section" style="display:none;">
+            <div class="section-header">
+                <div class="section-title-wrap">
+                    <span class="section-badge">RESULTS</span>
+                    <h2 class="section-title" id="search-results-title">Search Results</h2>
+                </div>
+                <button id="clearSearchLink" class="clear-search-link">Reset Search</button>
+            </div>
+            <div class="cars" id="search-results-container"></div>
+        </div>
+
+    </main>
+
+    <!-- Apple Sheet Style Order & Checkout Modal -->
+    <div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popupCarName">
+        <div class="popup-backdrop"></div>
+        <div class="popup-content">
+            <button class="close" id="popupCloseBtn" aria-label="Close dialog">&times;</button>
+
+            <div class="popup-header">
+                <span class="popup-pill">⚡ FAST CHECKOUT</span>
+                <h2>Order Vehicle</h2>
+                <h3 id="popupCarName">Select Car</h3>
+            </div>
+
+            <div class="price-container">
+                <div class="price-box" id="priceDisplayBox">
+                    <span class="price-label">Price</span>
+                    <span class="price-value" id="popupOriginalPrice">₹0</span>
+                </div>
+                <div class="price-box discounted-box" id="popupDiscountedRow" style="display:none;">
+                    <span class="price-label">Discounted</span>
+                    <span class="price-value gold" id="popupDiscountedPrice">₹0</span>
+                </div>
+            </div>
+
+            <!-- Promo Code Input -->
+            <div class="promo-container">
+                <label for="promoInput" class="promo-label">Have a Promo Code?</label>
+                <div class="promo-input-group">
+                    <input type="text" id="promoInput" placeholder="Enter Code" autocomplete="off">
+                    <button id="applyPromo" class="btn-promo-apply" type="button">
+                        Apply
+                    </button>
+                </div>
+                <p id="promoMessage" class="promo-message"></p>
+            </div>
+
+            <!-- Buyer Order Form (Direct to Seller without database) -->
+            <form id="orderForm" class="order-form" onsubmit="return false;">
+                <div class="order-form-intro">
+                    <span class="form-badge">BUYER INFORMATION</span>
+                    <p class="form-desc">Provide your contact details so the seller can deliver your CPM car instantly.
+                    </p>
+                </div>
+
+                <!-- Instagram ID -->
+                <div class="form-group">
+                    <label for="buyerInsta" class="form-label">
+                        <span class="label-icon">📸</span> Your Instagram ID <span class="required-star">*</span>
+                    </label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">@</span>
+                        <input type="text" id="buyerInsta" placeholder="your_insta_handle" autocomplete="off" required>
+                    </div>
+                    <div id="buyerInstaError" class="input-error-msg"></div>
+                </div>
+
+                <!-- WhatsApp Number -->
+                <div class="form-group">
+                    <label for="buyerWhatsapp" class="form-label">
+                        <span class="label-icon">📱</span> Your WhatsApp Number <span class="required-star">*</span>
+                    </label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">📞</span>
+                        <input type="tel" id="buyerWhatsapp" placeholder="e.g. 9876543210 or +91 9876543210"
+                            autocomplete="tel" required>
+                    </div>
+                    <div id="buyerWhatsappError" class="input-error-msg"></div>
+                </div>
+
+                <!-- CPM ID (Optional) -->
+                <div class="form-group">
+                    <label for="buyerCpmId" class="form-label">
+                        <span class="label-icon">🎮</span> CPM In-Game ID / Note <span
+                            class="optional-tag">(Optional)</span>
+                    </label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">ID</span>
+                        <input type="text" id="buyerCpmId" placeholder="e.g. CPM Player ID or custom livery request"
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Payment QR Accordion (Optional / UPI) -->
+                <div class="qr-accordion">
+                    <button type="button" class="qr-accordion-toggle" id="qrToggleBtn">
+                        <span class="qr-toggle-left">
+                            <span class="qr-toggle-icon">💳</span>
+                            <span>Pay via UPI QR (Optional)</span>
+                        </span>
+                        <span class="qr-toggle-arrow" id="qrToggleArrow">▼</span>
+                    </button>
+                    <div class="qr-accordion-body" id="qrAccordionBody" style="display:none;">
+                        <div class="qr-wrapper">
+                            <img src="images/imagesqr.jpg" alt="Payment QR Code" class="qr" id="paymentQrImg">
+                            <div class="qr-caption">Scan with GPay / PhonePe / Paytm / UPI</div>
+                        </div>
+                        <p class="qr-help-text">You can pay before or after confirming order with the seller on
+                            WhatsApp!</p>
+                    </div>
+                </div>
+
+                <!-- Confirm & Order on WhatsApp Button -->
+                <button type="button" id="confirmOrderBtn" class="confirm-order-btn">
+                    <span class="btn-wa-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path
+                                d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.35C9.34 7.35 9.04 7.42 8.78 7.7C8.52 7.98 7.78 8.67 7.78 10.08C7.78 11.49 8.81 12.85 8.95 13.04C9.1 13.23 10.96 16.1 13.82 17.33C16.2 18.36 16.68 18.15 17.19 18.11C17.71 18.06 18.86 17.43 19.1 16.76C19.34 16.08 19.34 15.5 19.27 15.38C19.2 15.26 19.01 15.19 18.73 15.05C18.45 14.91 17.08 14.23 16.82 14.14C16.57 14.05 16.38 14 16.2 14.28C16.01 14.56 15.48 15.19 15.32 15.38C15.16 15.56 15 15.58 14.72 15.44C14.44 15.3 13.54 15.01 12.47 14.05C11.64 13.31 11.08 12.4 10.92 12.12C10.76 11.84 10.9 11.69 11.04 11.55C11.17 11.42 11.33 11.21 11.47 11.05C11.61 10.89 11.66 10.77 11.75 10.59C11.85 10.4 11.8 10.24 11.73 10.1C11.66 9.96 11.1 8.59 10.87 8.03C10.64 7.48 10.41 7.56 10.24 7.55C10.08 7.55 9.89 7.35 9.53 7.35Z" />
+                        </svg>
+                    </span>
+                    <span>Confirm Order on WhatsApp</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+
+                <!-- Real-time Status / Success Notification -->
+                <div id="orderStatusNotice" class="order-status-notice" style="display:none;"></div>
+
+                <!-- Alternative Email Channel -->
+                <div class="order-alt-channel">
+                    <span>Prefer email? </span>
+                    <button type="button" id="confirmEmailBtn" class="alt-email-btn">Send via Email instead</button>
+                </div>
+            </form>
+
+            <div class="order-guarantee-note">
+                <span class="note-shield">🛡️</span>
+                <span>Direct to seller (+91 8590808931) • 100% Free &amp; Instant Delivery</span>
+            </div>
         </div>
     </div>
 
-    <div class="footer-bottom">
-        <p>&copy; 2026 FlyWheels Collection. Handcrafted by FlyWheels Customs.</p>
-        <p class="footer-note">All Car Parking Multiplayer vinyls, builds, and trademarks belong to their respective creators.</p>
+    <!-- Fullscreen Image Viewer Modal -->
+    <div class="image-viewer" id="imageViewer" role="dialog" aria-modal="true">
+        <button class="viewer-close" id="viewerCloseBtn" aria-label="Close image">&times;</button>
+        <div class="viewer-inner">
+            <img src="" id="viewerImg" alt="Enlarged Car View">
+            <div class="viewer-tip">Tap anywhere or press ESC to close</div>
+        </div>
     </div>
-</footer>
 
-<!-- Floating Instagram Button (Apple Pill with Glow) -->
-<a href="https://instagram.com/cpm.carriolic"
-   target="_blank"
-   rel="noopener"
-   class="floating-instagram"
-   aria-label="Contact on Instagram">
-    <span class="ig-icon">📸</span>
-    <span class="ig-text">Instagram</span>
-</a>
+    <!-- Premium Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <span class="logo-mark">⚡</span>
+                    <span class="brand-text">FLYWHEELS</span>
+                    <span class="brand-tag">CUSTOMS</span>
+                </div>
+                <p class="footer-desc">The #1 premium marketplace for Car Parking Multiplayer custom liveries,
+                    ultra-realistic HD badges, and exclusive builds.</p>
+            </div>
 
-<!-- Supabase SDK & App Logic -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
+            <div class="footer-links-group">
+                <h4>Quick Navigation</h4>
+                <ul>
+                    <li><a href="#collection">Showroom</a></li>
+                    <li><a href="#hdlogos-section">HD Logos</a></li>
+                    <li><a href="#builds-section">Custom Builds</a></li>
+                    <li><a href="#latest-section">Latest Arrivals</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-group">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://instagram.com/cpm.carriolic" target="_blank" rel="noopener">Instagram
+                            (@cpm.carriolic)</a></li>
+                    <li><a href="#collection">How to Buy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 FlyWheels Collection. Handcrafted by FlyWheels Customs.</p>
+            <p class="footer-note">All Car Parking Multiplayer vinyls, builds, and trademarks belong to their respective
+                creators.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Instagram Button (Apple Pill with Glow) -->
+    <a href="https://instagram.com/cpm.carriolic" target="_blank" rel="noopener" class="floating-instagram"
+        aria-label="Contact on Instagram">
+        <span class="ig-icon">📸</span>
+        <span class="ig-text">Instagram</span>
+    </a>
+
+    <!-- Supabase SDK & App Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>

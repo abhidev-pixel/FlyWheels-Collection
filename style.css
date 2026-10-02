@@ -1207,47 +1207,303 @@ nav.nav-scrolled {
     font-weight: 500;
 }
 
-.popup-instructions {
+/* ==========================================================================
+   Apple-Style Order Form & Checkout
+   ========================================================================== */
+.order-form {
+    display: flex;
+    flex-direction: column;
     text-align: left;
-    background: rgba(255, 215, 0, 0.04);
-    border-left: 2px solid var(--accent-gold);
+    margin-top: 8px;
+}
+
+.order-form-intro {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
     padding: 10px 14px;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
-.popup-instructions p {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
+.form-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-gold);
     margin-bottom: 4px;
+}
+
+.form-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
     line-height: 1.4;
+    margin: 0;
 }
 
-.popup-instructions p:last-child {
-    margin-bottom: 0;
+.form-group {
+    margin-bottom: 14px;
 }
 
-.insta-btn {
+.form-label {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 14px;
-    background: var(--accent-gold);
-    color: #000;
+    gap: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+}
+
+.label-icon {
+    font-size: 0.85rem;
+}
+
+.required-star {
+    color: var(--status-sold);
     font-weight: 700;
-    font-size: 0.9rem;
-    border-radius: var(--radius-pill);
-    text-decoration: none;
-    box-shadow: 0 6px 20px var(--accent-gold-glow);
+}
+
+.optional-tag {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-left: auto;
+}
+
+.input-with-prefix {
+    display: flex;
+    align-items: stretch;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
     transition: var(--transition-smooth);
 }
 
-.insta-btn:hover {
-    background: #fff;
+.input-with-prefix:focus-within {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 2px var(--accent-gold-glow);
+}
+
+.input-with-prefix.has-error {
+    border-color: var(--status-sold) !important;
+    box-shadow: 0 0 0 2px var(--status-sold-glow) !important;
+}
+
+.input-prefix {
+    padding: 0 12px;
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-right: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    min-width: 42px;
+}
+
+.input-with-prefix input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 11px 14px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+}
+
+.input-with-prefix input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+    font-size: 0.82rem;
+}
+
+.input-error-msg {
+    font-size: 0.72rem;
+    color: var(--status-sold);
+    margin-top: 5px;
+    padding-left: 2px;
+    display: none;
+    font-weight: 500;
+}
+
+.input-error-msg.visible {
+    display: block;
+    animation: errorShake 0.25s ease;
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* Payment QR Accordion */
+.qr-accordion {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+}
+
+.qr-accordion-toggle {
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.qr-accordion-toggle:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.qr-toggle-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qr-toggle-icon {
+    font-size: 0.9rem;
+}
+
+.qr-toggle-arrow {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qr-toggle-arrow.open {
+    transform: rotate(180deg);
+}
+
+.qr-accordion-body {
+    padding: 14px;
+    text-align: center;
+    border-top: 1px solid var(--border-subtle);
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.qr-help-text {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+/* Confirm & Order Button (Vibrant WhatsApp Action) */
+.confirm-order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #25D366 0%, #1ebe5d 50%, #128C7E 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.92rem;
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+    transition: var(--transition-smooth);
+    margin-top: 6px;
+}
+
+.confirm-order-btn:hover {
+    background: linear-gradient(135deg, #2ff778 0%, #25D366 50%, #128C7E 100%);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+}
+
+.confirm-order-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-wa-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Status / Redirect notice */
+.order-status-notice {
+    background: rgba(48, 209, 88, 0.12);
+    border: 1px solid rgba(48, 209, 88, 0.35);
+    color: var(--status-available);
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    margin-top: 14px;
+    text-align: center;
+    animation: popupSpring 0.3s var(--ease-apple);
+}
+
+.order-status-notice a {
+    color: var(--accent-gold);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* Alternative channel link */
+.order-alt-channel {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+}
+
+.alt-email-btn {
+    background: none;
+    border: none;
+    color: var(--accent-gold);
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin-left: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.alt-email-btn:hover {
+    opacity: 0.8;
+}
+
+/* Footer Guarantee Note */
+.order-guarantee-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.note-shield {
+    font-size: 0.8rem;
 }
 
 /* ==========================================================================
