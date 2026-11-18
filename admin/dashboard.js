@@ -45,6 +45,8 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
     const category = document.getElementById("carCategory").value;
     const status = document.getElementById("carStatus").value;
     const imageFile = document.getElementById("carImage").files[0];
+    const carImageUrlInput = document.getElementById("carImageUrl");
+    const manualImageUrl = carImageUrlInput ? carImageUrlInput.value.trim() : "";
 
     // ----------------------------
     // EDIT MODE (image optional)
@@ -63,7 +65,11 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
             status
         };
 
-        // If admin also chose a new image while editing, upload it too
+        if (manualImageUrl) {
+            updatePayload.image = manualImageUrl;
+        }
+
+        // If admin chose a new image file while editing, upload it too
         if (imageFile) {
             const fileName = Date.now() + "_" + imageFile.name;
 
@@ -73,7 +79,7 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
 
             if (uploadError) {
                 console.error(uploadError);
-                alert(uploadError.message);
+                alert("Storage upload error: " + uploadError.message + "\nTip: Run supabase_setup.sql in your Supabase SQL editor to create the 'cars' storage bucket, or paste an image URL directly.");
                 return;
             }
 
@@ -91,7 +97,7 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
 
         if (error) {
             console.error(error);
-            alert(error.message);
+            alert("Database update error: " + error.message + "\nTip: Run supabase_setup.sql in your Supabase SQL Editor to configure Row Level Security policies.");
             return;
         }
 
@@ -103,6 +109,7 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
         document.getElementById("carName").value = "";
         document.getElementById("carPrice").value = "";
         document.getElementById("carImage").value = "";
+        if (carImageUrlInput) carImageUrlInput.value = "";
 
         loadAdminCars();
         return;
@@ -111,30 +118,33 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
     // ----------------------------
     // ADD MODE (new car, image required)
     // ----------------------------
-    if (!name || !price || !imageFile) {
-        alert("Fill all fields.");
+    if (!name || !price || (!imageFile && !manualImageUrl)) {
+        alert("Fill all fields (provide an image file or enter an image URL).");
         return;
     }
 
-    const fileName = Date.now() + "_" + imageFile.name;
+    let imageUrl = manualImageUrl;
 
-    // Upload image
-    const { error: uploadError } = await client.storage
-        .from("cars")
-        .upload(fileName, imageFile);
+    // Upload image if file is selected
+    if (imageFile) {
+        const fileName = Date.now() + "_" + imageFile.name;
 
-    if (uploadError) {
-        console.error(uploadError);
-        alert(uploadError.message);
-        return;
+        const { error: uploadError } = await client.storage
+            .from("cars")
+            .upload(fileName, imageFile);
+
+        if (uploadError) {
+            console.error(uploadError);
+            alert("Storage upload error: " + uploadError.message + "\nTip: Ensure the 'cars' bucket exists in Supabase Storage with public access, or enter an Image URL directly.");
+            return;
+        }
+
+        const { data: publicData } = client.storage
+            .from("cars")
+            .getPublicUrl(fileName);
+
+        imageUrl = publicData.publicUrl;
     }
-
-    // Get public URL
-    const { data: publicData } = client.storage
-        .from("cars")
-        .getPublicUrl(fileName);
-
-    const imageUrl = publicData.publicUrl;
 
     // Save in database
     const { error } = await client
@@ -149,7 +159,7 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
 
     if (error) {
         console.error(error);
-        alert(error.message);
+        alert("Database insert error: " + error.message + "\nTip: Run supabase_setup.sql in your Supabase SQL Editor to enable Row Level Security policies.");
         return;
     }
 
@@ -158,6 +168,7 @@ document.getElementById("uploadCar").addEventListener("click", async () => {
     document.getElementById("carName").value = "";
     document.getElementById("carPrice").value = "";
     document.getElementById("carImage").value = "";
+    if (carImageUrlInput) carImageUrlInput.value = "";
 
     loadAdminCars();
 
@@ -333,7 +344,6 @@ document.addEventListener("click", async (e) => {
     }
 
     loadAdminCars();
-    loadCars();
 
 });
 // =======================
@@ -493,4 +503,49 @@ function loadSalesDashboard(cars) {
 
     });
 
+}
+
+// =======================
+// QUICK SEED DEFAULT CARS
+// =======================
+const seedCarsBtn = document.getElementById("seedCarsBtn");
+if (seedCarsBtn) {
+    seedCarsBtn.addEventListener("click", async () => {
+        const DEFAULT_SEED = [
+            { name: "Koenigsegg Agera RS Gryphon", price: 249, category: "1 of 1", status: "Available", image: "images/agera.jpg" },
+            { name: "Mercedes-AMG G63 Mansory Edition", price: 219, category: "1 of 1", status: "Available", image: "images/gwagon.jpg" },
+            { name: "BMW M5 F90 Competition (HD Logos)", price: 149, category: "HD Logos", status: "Available", image: "images/bmw.jpg" },
+            { name: "Land Rover Defender 110 Trophy", price: 169, category: "HD Logos", status: "Available", image: "images/defender.jpg" },
+            { name: "Volkswagen Golf GTI / Polo GT (HD Badges)", price: 129, category: "HD Logos", status: "Available", image: "images/polo.jpg" },
+            { name: "Ford F-150 Raptor Baja Pre-Runner", price: 159, category: "Builds", status: "Available", image: "images/ford.jpg" },
+            { name: "Honda Civic FD2 Stance Bart Livery", price: 119, category: "Builds", status: "Available", image: "images/civic.jpg" },
+            { name: "Honda Civic FK8 Type R Widebody", price: 139, category: "Builds", status: "Available", image: "images/typeR.jpg" },
+            { name: "Vengeance Special Series Coach", price: 139, category: "Bus", status: "Available", image: "images/pinkbus.jpg" }
+        ];
+
+        if (!confirm("This will insert the 9 default FlyWheels showroom vehicles into your Supabase 'cars' table. Continue?")) {
+            return;
+        }
+
+        seedCarsBtn.disabled = true;
+        seedCarsBtn.textContent = "Seeding cars...";
+
+        try {
+            const { error } = await client.from("cars").insert(DEFAULT_SEED);
+
+            if (error) {
+                console.error("Seed error:", error);
+                alert("Database seed notice: " + error.message + "\n\nTip: Run supabase_setup.sql in your Supabase SQL Editor to grant INSERT permissions or configure RLS.");
+            } else {
+                alert("Successfully seeded 9 vehicles into Supabase!");
+                loadAdminCars();
+            }
+        } catch (err) {
+            console.error("Seed error:", err);
+            alert("Unexpected error: " + err.message);
+        } finally {
+            seedCarsBtn.disabled = false;
+            seedCarsBtn.textContent = "⚡ Quick Seed 9 Default Cars";
+        }
+    });
 }

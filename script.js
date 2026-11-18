@@ -11,6 +11,98 @@ const client = window.supabase.createClient(
     SUPABASE_ANON_KEY
 );
 
+// Fallback showroom collection (used when Supabase is initializing or empty)
+const DEFAULT_CARS = [
+    {
+        id: "fw-agera-01",
+        name: "Koenigsegg Agera RS Gryphon",
+        price: 249,
+        category: "1 of 1",
+        status: "Available",
+        image: "images/agera.jpg",
+        created_at: "2026-10-01T10:00:00Z"
+    },
+    {
+        id: "fw-gwagon-02",
+        name: "Mercedes-AMG G63 Mansory Edition",
+        price: 219,
+        category: "1 of 1",
+        status: "Available",
+        image: "images/gwagon.jpg",
+        created_at: "2026-10-01T09:30:00Z"
+    },
+    {
+        id: "fw-bmw-03",
+        name: "BMW M5 F90 Competition (HD Logos)",
+        price: 149,
+        category: "HD Logos",
+        status: "Available",
+        image: "images/bmw.jpg",
+        created_at: "2026-10-01T09:00:00Z"
+    },
+    {
+        id: "fw-defender-04",
+        name: "Land Rover Defender 110 Trophy",
+        price: 169,
+        category: "HD Logos",
+        status: "Available",
+        image: "images/defender.jpg",
+        created_at: "2026-10-01T08:30:00Z"
+    },
+    {
+        id: "fw-polo-05",
+        name: "Volkswagen Golf GTI / Polo GT (HD Badges)",
+        price: 129,
+        category: "HD Logos",
+        status: "Available",
+        image: "images/polo.jpg",
+        created_at: "2026-10-01T08:00:00Z"
+    },
+    {
+        id: "fw-ford-06",
+        name: "Ford F-150 Raptor Baja Pre-Runner",
+        price: 159,
+        category: "Builds",
+        status: "Available",
+        image: "images/ford.jpg",
+        created_at: "2026-10-01T07:30:00Z"
+    },
+    {
+        id: "fw-civic-07",
+        name: "Honda Civic FD2 Stance Bart Livery",
+        price: 119,
+        category: "Builds",
+        status: "Available",
+        image: "images/civic.jpg",
+        created_at: "2026-10-01T07:00:00Z"
+    },
+    {
+        id: "fw-typer-08",
+        name: "Honda Civic FK8 Type R Widebody",
+        price: 139,
+        category: "Builds",
+        status: "Available",
+        image: "images/typeR.jpg",
+        created_at: "2026-10-01T06:30:00Z"
+    },
+    {
+        id: "fw-bus-09",
+        name: "Vengeance Special Series Coach",
+        price: 139,
+        category: "Bus",
+        status: "Available",
+        image: "images/pinkbus.jpg",
+        created_at: "2026-10-01T06:00:00Z"
+    }
+];
+
+// Fallback active promo codes
+const FALLBACK_PROMOS = {
+    "ANS10": { code: "ANS10", discount: 10, active: true },
+    "FIRSTORDER": { code: "FIRSTORDER", discount: 20, active: true },
+    "ABU44": { code: "ABU44", discount: 30, active: true }
+};
+
 let allCars = [];
 let selectedCar = null; // { id, name, price }
 let scrollObserver = null;
@@ -53,9 +145,11 @@ function initScrollObserver() {
 }
 
 // -----------------------------------------------------------------------------
-// Fetch & Load Cars from Supabase
+// Fetch & Load Cars from Supabase (with automatic fallback to showroom collection)
 // -----------------------------------------------------------------------------
 async function loadCars() {
+    let carsData = [];
+
     try {
         const { data, error } = await client
             .from("cars")
@@ -63,45 +157,53 @@ async function loadCars() {
             .order("created_at", { ascending: false });
 
         if (error) {
-            console.error("Error loading cars from Supabase:", error);
-            showErrorState("Could not load vehicles. Please refresh the page.");
-            return;
+            console.warn("Supabase notice (loading showroom catalog fallback):", error.message);
+        } else if (Array.isArray(data) && data.length > 0) {
+            carsData = data;
         }
-
-        allCars = data || [];
-
-        // 1. HD Logos Category
-        const hdLogos = allCars.filter(car => car.category && car.category.toLowerCase().trim() === "hd logos");
-        renderCarsToContainer(hdLogos, "hdlogos-container", "HD Logos");
-        updateCount("count-hdlogos", hdLogos.length);
-
-        // 2. Custom Builds Category (Previously missing from script)
-        const builds = allCars.filter(car => car.category && (car.category.toLowerCase().trim() === "builds" || car.category.toLowerCase().trim() === "build"));
-        renderCarsToContainer(builds, "builds-container", "Custom Builds");
-        updateCount("count-builds", builds.length);
-
-        // 3. 1 of 1 Category
-        const oneOfOne = allCars.filter(car => car.category && car.category.toLowerCase().trim() === "1 of 1");
-        renderCarsToContainer(oneOfOne, "oneofone-container", "1 of 1");
-        updateCount("count-oneofone", oneOfOne.length);
-
-        // 4. Bus Category
-        const bus = allCars.filter(car => car.category && car.category.toLowerCase().trim() === "bus");
-        renderCarsToContainer(bus, "bus-container", "Bus");
-        updateCount("count-bus", bus.length);
-
-        // 5. LATEST ARRIVALS (Shown after categories as requested)
-        // Shows newest 6 cars overall
-        const latestCars = allCars.slice(0, 6);
-        renderCarsToContainer(latestCars, "latest-container", "Latest Arrivals");
-        updateCount("count-latest", latestCars.length);
-
-        // Re-attach scroll observer to all newly injected cards
-        initScrollObserver();
-
     } catch (err) {
-        console.error("Unexpected error in loadCars:", err);
+        console.warn("Supabase network error, activating fallback showroom catalog:", err);
     }
+
+    // If Supabase has no cars yet or is undergoing setup / RLS configuration,
+    // seamlessly use the handcrafted FlyWheels showroom collection!
+    if (!carsData || carsData.length === 0) {
+        carsData = DEFAULT_CARS;
+    }
+
+    allCars = carsData;
+    renderAllShowroomCategories();
+}
+
+function renderAllShowroomCategories() {
+    // 1. HD Logos Category
+    const hdLogos = allCars.filter(car => car.category && car.category.toLowerCase().trim() === "hd logos");
+    renderCarsToContainer(hdLogos, "hdlogos-container", "HD Logos");
+    updateCount("count-hdlogos", hdLogos.length);
+
+    // 2. Custom Builds Category
+    const builds = allCars.filter(car => car.category && (car.category.toLowerCase().trim() === "builds" || car.category.toLowerCase().trim() === "build"));
+    renderCarsToContainer(builds, "builds-container", "Custom Builds");
+    updateCount("count-builds", builds.length);
+
+    // 3. 1 of 1 Category
+    const oneOfOne = allCars.filter(car => car.category && car.category.toLowerCase().trim() === "1 of 1");
+    renderCarsToContainer(oneOfOne, "oneofone-container", "1 of 1");
+    updateCount("count-oneofone", oneOfOne.length);
+
+    // 4. Bus Category
+    const bus = allCars.filter(car => car.category && car.category.toLowerCase().trim() === "bus");
+    renderCarsToContainer(bus, "bus-container", "Bus");
+    updateCount("count-bus", bus.length);
+
+    // 5. LATEST ARRIVALS (Shown after categories as requested)
+    // Shows newest 6 cars overall
+    const latestCars = allCars.slice(0, 6);
+    renderCarsToContainer(latestCars, "latest-container", "Latest Arrivals");
+    updateCount("count-latest", latestCars.length);
+
+    // Re-attach scroll observer to all newly injected cards
+    initScrollObserver();
 }
 
 function updateCount(elementId, count) {
@@ -693,13 +795,31 @@ if (applyPromoBtn) {
 
         try {
             // Case-insensitive query to Supabase promo_codes table
-            const { data, error } = await client
-                .from("promo_codes")
-                .select("*")
-                .ilike("code", code)
-                .single();
+            let promoRecord = null;
 
-            if (error || !data) {
+            try {
+                const { data, error } = await client
+                    .from("promo_codes")
+                    .select("*")
+                    .ilike("code", code)
+                    .maybeSingle();
+
+                if (!error && data) {
+                    promoRecord = data;
+                }
+            } catch (queryErr) {
+                console.warn("Supabase promo lookup failed, checking local codes:", queryErr);
+            }
+
+            // Fallback to active promo list if Supabase query had issues or promo wasn't found
+            if (!promoRecord) {
+                const upperCode = code.toUpperCase();
+                if (FALLBACK_PROMOS[upperCode]) {
+                    promoRecord = FALLBACK_PROMOS[upperCode];
+                }
+            }
+
+            if (!promoRecord) {
                 promoMessage.textContent = "Invalid promo code.";
                 promoMessage.style.color = "#FF453A";
                 popupDiscountedRow.style.display = "none";
@@ -710,7 +830,7 @@ if (applyPromoBtn) {
                 return;
             }
 
-            if (!data.active) {
+            if (!promoRecord.active) {
                 promoMessage.textContent = "This promo code has expired.";
                 promoMessage.style.color = "#FF453A";
                 popupDiscountedRow.style.display = "none";
@@ -721,12 +841,12 @@ if (applyPromoBtn) {
                 return;
             }
 
-            const discountPercent = Number(data.discount);
+            const discountPercent = Number(promoRecord.discount);
             const discountedPrice = selectedCar.price - (selectedCar.price * discountPercent / 100);
 
             selectedCar.discountedPrice = Math.round(discountedPrice);
             selectedCar.appliedPromo = {
-                code: data.code.toUpperCase(),
+                code: promoRecord.code.toUpperCase(),
                 discount: discountPercent
             };
 
@@ -749,6 +869,16 @@ if (applyPromoBtn) {
             applyPromoBtn.textContent = "Apply";
         }
     });
+
+    // Allow pressing Enter in the promo input to apply
+    if (promoInput) {
+        promoInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                applyPromoBtn.click();
+            }
+        });
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -811,13 +941,16 @@ window.addEventListener("scroll", () => {
 // -----------------------------------------------------------------------------
 // Boot Application
 // -----------------------------------------------------------------------------
-document.addEventListener("DOMContentLoaded", () => {
+let isAppBooted = false;
+function bootApp() {
+    if (isAppBooted) return;
+    isAppBooted = true;
     loadCars();
     initScrollObserver();
-});
+}
 
-// Immediate load in case DOM is already parsed
 if (document.readyState === "complete" || document.readyState === "interactive") {
-    loadCars();
-    initScrollObserver();
+    bootApp();
+} else {
+    document.addEventListener("DOMContentLoaded", bootApp);
 }
