@@ -153,3 +153,4 @@ VALUES
     ('FIRSTORDER', 20, true),
     ('ABU44', 30, true)
 ON CONFLICT (code) DO NOTHING;
+
